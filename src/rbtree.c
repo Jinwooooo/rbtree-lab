@@ -2,8 +2,8 @@
 
 #include <stdlib.h>
 // [MOD] debugging purposes
-// #include <stdio.h>
-// #include <string.h>
+#include <stdio.h>
+#include <string.h>
 
 // void delete_node(rbtree *t, node_t *curr);
 // void rotate_left(rbtree *t, node_t *curr);
@@ -440,36 +440,36 @@ int rbtree_to_array(const rbtree *t, key_t *arr, const size_t n) {
 }
 
 // [MOD] debugging purposes
-// void print_tree(rbtree *t, node_t *node, int depth) {
-//   if (node == t->nil) {
-//     return;
-//   }
+void print_tree(rbtree *t, node_t *node, int depth) {
+  if (node == t->nil) {
+    return;
+  }
 
-//   print_tree(t, node->right, depth + 1);
-//   for (int i = 0; i < depth; i++) {
-//     printf("     ");
-//   }
-//   printf("R----%d (%s)\n", node->key, node->color == RBTREE_RED ? "Red" : "Black");
-//   print_tree(t, node->left, depth + 1);
-// }
+  print_tree(t, node->right, depth + 1);
+  for (int i = 0; i < depth; i++) {
+    printf("     ");
+  }
+  printf("R----%d (%s)\n", node->key, node->color == RBTREE_RED ? "Red" : "Black");
+  print_tree(t, node->left, depth + 1);
+}
 
 // [MOD] debugging purposes (must be commented for 'make test')
-// int main(int argc, char *argv[]) {
-//   rbtree *t = new_rbtree();
-//   for(int i = 1; i < 11; i++) {
-//     rbtree_insert(t, i);
-//   }
+int main(int argc, char *argv[]) {
+  rbtree *t = new_rbtree();
+  for(int i = 1; i < 11; i++) {
+    rbtree_insert(t, i);
+  }
   
-//   print_tree(t, t->root, 0);
+  print_tree(t, t->root, 0);
 
-//   node_t *temp = rbtree_find(t, 6);
-//   printf("%d\n", temp->color);
-//   rbtree_erase(t, temp);
+  node_t *temp = rbtree_find(t, 6);
+  printf("%d\n", temp->color);
+  rbtree_erase(t, temp);
 
-//   printf("after delete\n");
-//   print_tree(t, t->root, 0);
+  printf("after delete\n");
+  print_tree(t, t->root, 0);
 
-//   return 0
-// }
+  return 0;
+}
 
 
