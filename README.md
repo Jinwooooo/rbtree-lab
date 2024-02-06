@@ -60,6 +60,8 @@ R----4 (Black)
           R----1 (Black)
 ```
 
+뿅!
+
 ---
 
 # Red-Black Tree 구현

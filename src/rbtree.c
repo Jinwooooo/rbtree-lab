@@ -196,11 +196,13 @@ node_t *rbtree_insert(rbtree *t, const key_t key) {
   }
 
   // checking cases for when insert_fix is not necessary
+  // node insertion when the tree is empty (no root)
   if(node->parent == t->nil) {
     node->color = RBTREE_BLACK;
     return node;
   }
-  if(node->parent->parent == NULL) {
+  // if the tree only has root node, insert red child and end
+  if(node->parent->parent == t->nil) {
     return node;
   }
 
