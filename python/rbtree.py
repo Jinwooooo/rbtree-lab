@@ -56,32 +56,39 @@ class RBTree():
 
 	def insert_fix(self, curr):
 		while curr.parent.color == 'r':
+			# subtree in the right side
 			if curr.parent == curr.parent.parent.right:
 				uncle = curr.parent.parent.left
+				# case 1r : uncle is red = RECOLOR
 				if uncle.color == 'r':
 					uncle.color = 'b'
 					curr.parent.color = 'b'
 					curr.parent.parent.color = 'r'
 					curr = curr.parent.parent
 				else:
+					# case 3r : uncle is black + left subtree = RESTRUCTURE (double rotation)
 					if curr == curr.parent.left:
 						curr = curr.parent
 						self.rotate_right(curr)
+					# case 2r : uncle is black + right subtree = RESTRUCTURE (single rotation)
 					curr.parent.color = 'b'
 					curr.parent.parent.color = 'r'
 					self.rotate_left(curr.parent.parent)
+			# subtree in the left side
 			else:
 				uncle = curr.parent.parent.right
-
+				# case 1l : uncle is red = RECOLOR
 				if uncle.color == 'r':
 					uncle.color = 'b'
 					curr.parent.color = 'b'
 					curr.parent.parent.color = 'r'
 					curr = curr.parent.parent
 				else:
+					# case 3l : uncle is black + right subtree = RESTRUCTURE (double rotation)
 					if curr == curr.parent.right:
 						curr = curr.parent
 						self.rotate_left(curr)
+					# case 2 : uncle is black + left subtree = RESTRUCTURE (single rotation)
 					curr.parent.color = 'b'
 					curr.parent.parent.color = 'r'
 					self.rotate_right(curr.parent.parent)
@@ -161,47 +168,53 @@ class RBTree():
 
 	def delete_fix(self, curr):
 		while curr != self.root and curr.color == 'b':
+			# // case 1l : curr left & sibling right + black height property violation
 			if curr == curr.parent.left:
 				sibling = curr.parent.right
+				# case 1.1l : sibiling is red
 				if sibling.color == 'r':
 					sibling.color = 'b'
 					curr.parent.color = 'r'
 					self.rotate_left(curr.parent)
 					sibling = curr.parent.right
-
+				# case 1.2l: sibling and children are black
 				if sibling.left.color == 'b' and sibling.right.color == 'b':
 					sibling.color = 'r'
 					curr = curr.parent
 				else:
+					# case 1.3l: sibling is black, sibling left child is red, sibling right child is black
 					if sibling.right.color == 'b':
 						sibling.left.color = 'b'
 						sibling.color = 'r'
 						self.rotate_right(sibling)
 						sibling = curr.parent.right
-
+					# case 1.4l: sibling is black, and sibling right child is red
 					sibling.color = curr.parent.color
 					curr.parent.color = 'b'
 					sibling.right.color = 'b'
 					self.rotate_left(curr.parent)
 					curr = self.root
+			# case 1r : curr right & sibling left + black height property violation
 			else:
 				sibling = curr.parent.left
+				# case 1.1r : sibiling is red
 				if sibling.color == 'r':
 					sibling.color = 'b'
 					curr.parent.color = 'r'
 					self.rotate_right(curr.parent)
 					sibling = curr.parent.left
-
+				# case 1.2r: sibling and children are black
 				if sibling.right.color == 'b' and sibling.right.color == 'b':
 					sibling.color = 'r'
 					curr = curr.parent
+				# case 1.3r: sibling is black, sibling left child is red, sibling right child is black
 				else:
 					if sibling.left.color == 'b':
 						sibling.right.color = 'b'
 						sibling.color = 'r'
 						self.rotate_left(sibling)
 						sibling = curr.parent.left
-
+					# case 1.4r: sibling is black, and sibling right child is red
 					sibling.color = curr.parent.color
 					curr.parent.color = 'b'
 					sibling.left.color = 'b'
@@ -224,6 +237,7 @@ class RBTree():
 			node_ref = self.minimum(curr.right)
 			o_color = node_ref.color
 			node_rep = node_ref.right
+			# the successor is the right child of current node
 			if node_ref.parent == curr:
 				node_rep.parent = node_ref
 			else:

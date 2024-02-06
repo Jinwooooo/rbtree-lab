@@ -146,7 +146,7 @@ void insert_fix(rbtree *t, node_t *curr) {
           curr = curr->parent;
           rotate_left(t, curr);
         }
-        // case 2; : uncle is black + left subtree = RESTRUCTURE (single rotation)
+        // case 2 : uncle is black + left subtree = RESTRUCTURE (single rotation)
         curr->parent->color = RBTREE_BLACK;
         if(curr->parent->parent != NULL) {
           curr->parent->parent->color = RBTREE_RED;
