@@ -6,14 +6,14 @@ Tree 자료구조가 높이 조절을 따로 안하면 최악의 경우 배열�
 
 - ***B-Tree***는 삽입/삭제 전에 미리 밑작업을 진행하여 삽입/삭제되는 순간 균형이 잡혀있어 따로 추가적인 작업은 안해도된다. (대신 밑작업이 복잡하다)
 - ***AVL Tree***는 삽입/삭제 후 rotation을 활용하여 균형을 잡는다. 균형을 잡기 위해 높이를 따로 노드에 저장해야하며 int 타입으로 인해 총 4 바이트를 먹게된다. 추가적으로 RB Tree보다 더 강한 제약조건을 유지해야해서 삽입/삭제 한번에 rotation을 많이 쓰게 되는 경우도 있다. 대신 탐색이 RB Tree 보다 빠르다.
-- ***RB Tree***는 삽입/삭제 후 rotation을 활용하여 균형을 잡는다. 균형을 잡기 위해 노드에게 색을 부여하며 char 타입으로 충분이 커버가능해서 1 바이트를 먹게된다. 균형을 잡기위한 제약조건으로 인해 삽입/삭제 최악의 경우 double rotation을 사용한다. 대체적으로 Balanced Tree를 사용해야하는 상황이면 RB Tree를 사용한다.
+- ***RB Tree***는 삽입/삭제 후 rotation을 활용하여 균형을 잡는다. 균형을 잡기 위해 노드에게 색을 부여하며 char 타입으로 충분이 커버가능해서 1 바이트를 먹게된다. 균형을 잡기위한 제약조건으로 인해 삽입/삭제 최악의 경우 double rotation을 사용한다. 대체적으로 Balanced Binary Tree를 사용해야하는 상황이면 RB Tree를 사용한다.
 
 정글에게 주어진 RB Tree 이론/논리 이해 + 구현 시간 + 기본적인 CS 지식으로는 사실상 제로베이스에서 빌드업하기는 매우 어렵다 (만약 제로베이스에서 가능하시다면... ~~돔황챠!~~). CLRS (알고리즘 책)에서 의사코드로 깔끔하게 정리 되있어서, 이론/논리 이해 후 의사코드의 뼈대와 추가적인 인터넷에서 C코드 구현하는 부분들을 찾아보면서 과제를 진행했다. 개인적으로 C에서 Segmentation Fault 오류로 인해 디버깅이 어려워서 RBTree Insert/Erase는 Python으로 먼저 전부다 구현 완성하고 C로 했다.
 
 ## Functions
 - `*new_rbtree(void)`: Red Black Tree (rbtree) initialization
 - `delete_rbtree(rbtree)` + `delete_node(rbtree, node)`: 재귀로 root에서 시작해서 노드 삭제 (i.e. free(node))
-- `rotate_left(rbtree, node)` + `rotate_right(rbtree, node)`: 이걸 생각해내고 구현한 사람은 미친놈이다. 이게 Balance Tree의 심장이라고 생각한다.
+- `rotate_left(rbtree, node)` + `rotate_right(rbtree, node)`: 이걸 생각해내고 구현한 사람은 미친놈이다. 이게 Balanced Binary Tree의 심장이라고 생각한다.
 - `*rbtree_insert(rbtree, key)`: 새로운 노드 값을 삽입 (기본 삽입 자체는 BST와 크게 다를게 없다) 제약조건에 따라 insert_fix를 호출한다.
 - `insert_fix(rbtree, node)`: 삽입 후 제약조건에 어긋나는 상황이 발생시 활용.
 - `*rbtree_find(rbtree, key)`: 값을 받고 노드의 위치를 반환해주는 함수
