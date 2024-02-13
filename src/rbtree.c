@@ -46,26 +46,23 @@ void delete_rbtree(rbtree *t) {
 // [MOD] rotating a sub-tree left (modular function for insert/delete reuse purposes)
 void rotate_left(rbtree *t, node_t *curr) {
   // seg fault avoidance
-  if(curr == NULL) {
+  if(curr == NULL)
     return;
-  }
 
   node_t *r = curr->right;
   curr->right = r->left;
 
-  if(r->left != t->nil) {
+  if(r->left != t->nil)
     r->left->parent = curr;
-  }
 
   r->parent = curr->parent;
 
-  if(curr->parent == t->nil) {
+  if(curr->parent == t->nil)
     t->root = r;
-  } else if(curr == curr->parent->left) {
+  else if(curr == curr->parent->left)
     curr->parent->left = r;
-  } else {
+  else
     curr->parent->right = r;
-  }
 
   r->left = curr;
   curr->parent = r;
@@ -74,26 +71,23 @@ void rotate_left(rbtree *t, node_t *curr) {
 // [MOD] rotating a sub-tree left (modular function for insert/delete reuse purposes)
 void rotate_right(rbtree *t, node_t *curr) {
   // seg fault avoidance
-  if(curr == NULL) {
+  if(curr == NULL)
     return;
-  }
 
   node_t *l = curr->left;
   curr->left = l->right;
 
-  if(l->right != t->nil) {
+  if(l->right != t->nil)
     l->right->parent = curr;
-  }
 
   l->parent = curr->parent;
 
-  if(l->parent == t->nil) {
+  if(l->parent == t->nil)
     t->root = l;
-  } else if(curr == curr->parent->right) {
+  else if(curr == curr->parent->right)
     curr->parent->right = l;
-  } else {
+  else
     curr->parent->left = l;
-  }
 
   l->right = curr;
   curr->parent = l;
@@ -101,9 +95,8 @@ void rotate_right(rbtree *t, node_t *curr) {
 
 void insert_fix(rbtree *t, node_t *curr) {
   // seg fault avoidance
-  if(curr == NULL) {
+  if(curr == NULL)
     return;
-  }
 
   node_t *uncle;
 
@@ -133,7 +126,6 @@ void insert_fix(rbtree *t, node_t *curr) {
     // subtree in the left side
     } else {
       uncle = curr->parent->parent->right;
-
       // case 1l : uncle is red = RECOLOR
       if(uncle != NULL && uncle->color == RBTREE_RED){
         uncle->color = RBTREE_BLACK;
@@ -154,14 +146,12 @@ void insert_fix(rbtree *t, node_t *curr) {
         }
       }
 
-      if(curr == t->root) {
+      if(curr == t->root)
         break;
-      }
     }
 
-    if(t->root != NULL) {
+    if(t->root != NULL)
       t->root->color = RBTREE_BLACK;
-    } 
   }
 }
 
@@ -180,20 +170,18 @@ node_t *rbtree_insert(rbtree *t, const key_t key) {
   // finding node insert position
   while(insert_position != t->nil) {
     parent_position = insert_position;
-    if(node->key < insert_position->key) {
+    if(node->key < insert_position->key)
       insert_position = insert_position->left;
-    } else {
+    else
       insert_position = insert_position->right;
-    }
   }
   node->parent = parent_position;
-  if(parent_position == t->nil) {
+  if(parent_position == t->nil)
     t->root = node;
-  } else if(node->key < parent_position->key) {
+  else if(node->key < parent_position->key)
     parent_position->left = node;
-  } else {
+  else
     parent_position->right = node;
-  }
 
   // checking cases for when insert_fix is not necessary
   // node insertion when the tree is empty (no root)
@@ -202,9 +190,8 @@ node_t *rbtree_insert(rbtree *t, const key_t key) {
     return node;
   }
   // if the tree only has root node, insert red child and end
-  if(node->parent->parent == t->nil) {
+  if(node->parent->parent == t->nil)
     return node;
-  }
 
   insert_fix(t, node);
   return node;
@@ -214,13 +201,12 @@ node_t *rbtree_find(const rbtree *t, const key_t key) {
   node_t *curr = t->root;
 
   while(curr != t->nil) {
-    if(curr->key > key) {
+    if(curr->key > key)
       curr = curr->left;
-    } else if(curr->key < key) {
+    else if(curr->key < key)
       curr = curr->right;
-    } else {
+    else
       return curr;
-    }
   }
 
   return NULL;
@@ -229,13 +215,11 @@ node_t *rbtree_find(const rbtree *t, const key_t key) {
 node_t *rbtree_min(const rbtree *t) {
   node_t *min = t->root;
 
-  if(min == t->nil) {
+  if(min == t->nil)
     return NULL;
-  }
 
-  while(min->left != t->nil) {
+  while(min->left != t->nil)
     min = min->left;
-  }
 
   return min;
 }
@@ -243,13 +227,11 @@ node_t *rbtree_min(const rbtree *t) {
 node_t *rbtree_max(const rbtree *t) {
   node_t *max = t->root;
 
-  if(max == t->nil) {
+  if(max == t->nil)
     return NULL;
-  }
 
-  while(max->right != t->nil){
+  while(max->right != t->nil)
     max = max->right;
-  }
 
   return max;
 }
@@ -257,17 +239,15 @@ node_t *rbtree_max(const rbtree *t) {
 // [MOD] node swap for erase operation
 void transplant(rbtree *t, node_t *node_del, node_t *node_sub) {
   // seg fault avoidance
-  if(node_del == NULL || node_sub == NULL) {
+  if(node_del == NULL || node_sub == NULL)
     return;
-  }
 
-  if(node_del->parent == t->nil) {
+  if(node_del->parent == t->nil)
     t->root = node_sub;
-  } else if(node_del == node_del->parent->left) {
+  else if(node_del == node_del->parent->left)
     node_del->parent->left = node_sub;
-  } else {
+  else
     node_del->parent->right = node_sub;
-  }
 
   node_sub->parent = node_del->parent;
 }
@@ -275,22 +255,20 @@ void transplant(rbtree *t, node_t *node_del, node_t *node_sub) {
 // [MOD] finding min value in the subtree for replacement
 node_t *subtree_find_min(rbtree *t, node_t *curr) {
   // seg fault avoidance
-  if(curr == NULL) {
+  if(curr == NULL)
     return NULL;
-  }
 
-  while(curr->left != t->nil) {
+  while(curr->left != t->nil)
     curr = curr->left;
-  }
+
   return curr;
 }
 
 // [MOD] recoloring and/or restructuring tree to make sure the 5 rules of RBTree are maintained
 void erase_fix(rbtree *t, node_t *curr) {
   // seg fault avoidance
-  if(curr == NULL) {
+  if(curr == NULL)
     return;
-  }
 
   node_t *sibling;
 
@@ -361,54 +339,40 @@ void erase_fix(rbtree *t, node_t *curr) {
 
 int rbtree_erase(rbtree *t, node_t *curr) {
   // seg fault avoidance
-  if(curr == NULL) {
+  if(curr == NULL)
     return -1;
-  }
 
-  node_t *node_rep;
-  node_t *node_ref = curr;
-  int o_color = node_ref->color;
+  node_t *node_replace;
+  node_t *node_reference = curr;
+  int o_color = node_reference->color;
 
   if(curr->left == t->nil) {
-    node_rep = curr->right;
-    if(node_rep) {
-      transplant(t, curr, curr->right);
-    }
+    node_replace = curr->right;
+    transplant(t, curr, curr->right);
   } else if (curr->right == t->nil) {
-    node_rep = curr->left;
-    if(node_rep) {
-      transplant(t, curr, curr->left);
-    }
+    node_replace = curr->left;
+    transplant(t, curr, curr->left);
   } else {
-    node_ref = subtree_find_min(t, curr->right);
-    if(node_ref) {
-      o_color = node_ref->color;
-      node_rep = node_ref->right;
+    node_reference = subtree_find_min(t, curr->right);
+    node_replace = node_reference->right;
+    o_color = node_reference->color;
 
-      if(node_rep) {
-        // the successor is the right child of current node
-        if(node_ref->parent == curr) {
-          node_rep->parent = node_ref;
-        } else {
-          transplant(t, node_ref, node_ref->right);
-          node_ref->right = curr->right;
-          if(node_ref->right) {
-            node_ref->right->parent = node_ref;
-          }
-        }
-      }
-      transplant(t, curr, node_ref);
-      node_ref->left = curr->left;
-      if(node_ref->left) {
-        node_ref->left->parent = node_ref;
-      }
-      node_ref->color = curr->color;
-    } 
+    if(node_reference->parent == curr)
+      node_replace->parent = node_reference;
+    else {
+      transplant(t, node_reference, node_reference->right);
+      node_reference->right = curr->right;
+      node_reference->right->parent = node_reference;
+    }
+    transplant(t, curr, node_reference);
+    node_reference->left = curr->left;
+    node_reference->left->parent = node_reference;
+    node_reference->color = curr->color;
   }
 
-  if(o_color == RBTREE_BLACK) {
-    erase_fix(t, node_rep);
-  }
+  if(o_color == RBTREE_BLACK)
+    erase_fix(t, node_replace);
+
   free(curr);
 
   return 0;
@@ -417,17 +381,15 @@ int rbtree_erase(rbtree *t, node_t *curr) {
 // [MOD] inorder traversal w/ recursion
 void inorder_trav(const rbtree *t, key_t *arr, const size_t n, node_t *node, int *count) {
   // seg fault avoidance
-  if(node == NULL) {
+  if(node == NULL)
     return;
-  }
 
   // base case
-  if(node == t->nil) {
+  if(node == t->nil)
     return;
-  }
 
   inorder_trav(t, arr, n, node->left, count);
-  if(*count < n){
+  if(*count < n) {
     arr[*count] = node->key;
     *count = *count + 1 ;
   }
@@ -443,14 +405,12 @@ int rbtree_to_array(const rbtree *t, key_t *arr, const size_t n) {
 
 // // [MOD] debugging purposes
 // void print_tree(rbtree *t, node_t *node, int depth) {
-//   if (node == t->nil) {
+//   if (node == t->nil)
 //     return;
-//   }
 
 //   print_tree(t, node->right, depth + 1);
-//   for (int i = 0; i < depth; i++) {
+//   for (int i = 0; i < depth; i++)
 //     printf("     ");
-//   }
 //   printf("R----%d (%s)\n", node->key, node->color == RBTREE_RED ? "Red" : "Black");
 //   print_tree(t, node->left, depth + 1);
 // }
@@ -458,9 +418,8 @@ int rbtree_to_array(const rbtree *t, key_t *arr, const size_t n) {
 // // [MOD] debugging purposes (must be commented for 'make test')
 // int main(int argc, char *argv[]) {
 //   rbtree *t = new_rbtree();
-//   for(int i = 1; i < 11; i++) {
+//   for(int i = 1; i < 11; i++)
 //     rbtree_insert(t, i);
-//   }
   
 //   print_tree(t, t->root, 0);
 
