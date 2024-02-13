@@ -93,6 +93,7 @@ void rotate_right(rbtree *t, node_t *curr) {
   curr->parent = l;
 }
 
+// [MOD] recoloring and/or restructuring tree to make sure the 5 rules of RBTree are maintained
 void insert_fix(rbtree *t, node_t *curr) {
   // seg fault avoidance
   if(curr == NULL)
@@ -155,7 +156,6 @@ void insert_fix(rbtree *t, node_t *curr) {
   }
 }
 
-// [MOD] recoloring and/or restructuring tree to make sure the 5 rules of RBTree are maintained
 node_t *rbtree_insert(rbtree *t, const key_t key) {
   node_t *node = (node_t *)calloc(1, sizeof(node_t));
   node->key = key;
