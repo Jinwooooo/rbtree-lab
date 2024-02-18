@@ -34,9 +34,8 @@ void print_tree(rbtree *t, node_t *node, int depth) {
   }
 
   print_tree(t, node->right, depth + 1);
-  for (int i = 0; i < depth; i++) {
+  for (int i = 0; i < depth; i++)
     printf("     ");
-  }
   printf("R----%d (%s)\n", node->key, node->color == RBTREE_RED ? "Red" : "Black");
   print_tree(t, node->left, depth + 1);
 }
@@ -44,9 +43,8 @@ void print_tree(rbtree *t, node_t *node, int depth) {
 // [MOD] debugging purposes (must be commented for 'make test')
 int main(int argc, char *argv[]) {
   rbtree *t = new_rbtree();
-  for(int i = 1; i < 11; i++) {
+  for(int i = 1; i < 11; i++)
     rbtree_insert(t, i);
-  }
   
   print_tree(t, t->root, 0);
   return 0;
